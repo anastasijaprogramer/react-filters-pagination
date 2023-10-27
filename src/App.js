@@ -1,49 +1,57 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {filterByValue, loadData, loadExactPage, loadNewPage, sortByAlphabet, sortByPrice} from "./store";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { filterByValue, loadData, loadExactPage, loadNewPage, sortByAlphabet, sortByPrice } from "./store";
 
-class App extends Component {
+class App extends Component
+{
 
-    componentDidMount() {
+    componentDidMount()
+    {
         const params = new URLSearchParams(window.location.search);
         const pageQueryParam = params.get('page');
         if (!pageQueryParam) {
-            window.history.pushState({page: 1}, "title 1", "?page=1");
+            window.history.pushState({ page: 1 }, "title 1", "?page=1");
         } else {
 
         }
-        this.props.dispatch(loadData({count: 40}));
+        this.props.dispatch(loadData({ count: 40 }));
     }
 
-    filterByInput(e){
+    filterByInput(e)
+    {
         let input = e.target.value;
-        this.props.dispatch(filterByValue({value: input}))
+        this.props.dispatch(filterByValue({ value: input }))
     }
 
-    nextPage() {
-        this.props.dispatch(loadNewPage({page: 1}))
+    nextPage()
+    {
+        this.props.dispatch(loadNewPage({ page: 1 }))
     }
 
-    previousPage() {
-        this.props.dispatch(loadNewPage({page: -1}));
+    previousPage()
+    {
+        this.props.dispatch(loadNewPage({ page: -1 }));
     }
 
-    goToPage(page) {
-        this.props.dispatch(loadExactPage({page}))
+    goToPage(page)
+    {
+        this.props.dispatch(loadExactPage({ page }))
     }
 
-    sortByInput(e){
+    sortByInput(e)
+    {
         let value = e.target.value;
         let direction = value.endsWith('asc') ? "asc" : "desc";
 
-        if (value.startsWith('price')){
-            this.props.dispatch(sortByPrice({direction}))
-        }else {
-            this.props.dispatch(sortByAlphabet({direction}));
+        if (value.startsWith('price')) {
+            this.props.dispatch(sortByPrice({ direction }))
+        } else {
+            this.props.dispatch(sortByAlphabet({ direction }));
         }
     }
 
-    render() {
+    render()
+    {
         let products = this.props.state.filteredProducts;
         return (
             <div className="App">
@@ -62,11 +70,13 @@ class App extends Component {
                 <section className='section'>
                     <div className='container'>
                         <nav className="pagination" role="navigation" aria-label="pagination">
-                            <button className="button pagination-previous" onClick={() => {
+                            <button className="button pagination-previous" onClick={() =>
+                            {
                                 this.previousPage()
                             }}>Previous
                             </button>
-                            <button className="button pagination-next" onClick={() => {
+                            <button className="button pagination-next" onClick={() =>
+                            {
                                 this.nextPage()
                             }}>Next page
                             </button>
@@ -90,10 +100,11 @@ class App extends Component {
                 <section className='section'>
                     <div className='container'>
                         <div>
-                            <div className="field is-grouped" style={{alignItems: "center"}}>
+                            <div className="field is-grouped" style={{ alignItems: "center" }}>
                                 <div className="control">
                                     <div className="select">
-                                        <select onChange={e => {
+                                        <select onChange={e =>
+                                        {
                                             this.sortByInput(e)
                                         }}>
                                             <option value="" disabled selected>Sort by</option>
@@ -108,14 +119,15 @@ class App extends Component {
                                     </div>
                                 </div>
 
-                                <div className='control' style={{minWidth: "300px"}}>
-                                    <input onChange={e => {
+                                <div className='control' style={{ minWidth: "300px" }}>
+                                    <input onChange={e =>
+                                    {
                                         this.filterByInput(e);
-                                    }} style={{width: "100%"}} placeholder='Filter by' type='text'/>
+                                    }} style={{ width: "100%" }} placeholder='Search' type='text' />
                                 </div>
                             </div>
                         </div>
-                        <div className='tile is-ancestor' style={{flexWrap: "wrap"}}>
+                        <div className='tile is-ancestor' style={{ flexWrap: "wrap" }}>
                             {
                                 products && products.length && products.map(product => (
                                     <div className='tile is-parent is-3'>
@@ -149,8 +161,9 @@ class App extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {state};
+function mapStateToProps(state)
+{
+    return { state };
 }
 
 export default connect(mapStateToProps)(App);
